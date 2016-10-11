@@ -19,11 +19,15 @@
 
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="pim">
-        <param name="android-package" value="com.s5.plugin.pim"/>
+        <param name="android-package" value="com.s5.pim"/>
       </feature>
     </config-file>
 
-    <source-file src="src/android/Pim.java" target-dir="src/com/s5/plugin/"/>
+    <source-file src="src/android/Pim.java" target-dir="src/com/s5/plugins/"/>
+    <source-file src="src/android/libs/PayPoint.jar" target-dir="libs" />
   </platform>
 
 </plugin>
+
+
+
