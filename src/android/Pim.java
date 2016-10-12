@@ -35,5 +35,6 @@ public class Pim extends CordovaPlugin {
                 return false;
             }
     	}
+    	return false;
     }
 }
