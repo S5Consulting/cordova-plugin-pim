@@ -19,7 +19,7 @@ public class Pim extends CordovaPlugin {
 
         if (action.equals("open")) {
 
-        	myPayPoint.open();
+        	myPayPoint.open("", "");
             callbackContext.success("OK");
 
             return true;
