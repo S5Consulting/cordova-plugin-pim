@@ -6,18 +6,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import no.point.paypoint.*;
 
-public class Pim extends CordovaPlugin {
+public class Pim extends CordovaPlugin implements PayPointListener {
 
-	IPayPoint payPoint = PayPointFactory.createPayPoint();
+	PayPoint myPayPoint;
+
+	public Pim() {
+		myPayPoint = new PayPoint();
+	}
 
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
         if (action.equals("open")) {
 
-            String name = data.getString(0);
-            String message = "Hello, " + name;
-            callbackContext.success(message);
+        	myPayPoint.open();
+            callbackContext.success("OK");
 
             return true;
 
