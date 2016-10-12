@@ -18,10 +18,13 @@ public class Pim extends CordovaPlugin {
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
 
         if (action.equals("open")) {
-
-        	myPayPoint.open("COM1", "v1.0.0");
-            callbackContext.success("OK");
-
+        	try {
+				myPayPoint.open("COM1", "v1.0.0");
+				callbackContext.success("OK");
+        	} catch (Exception e) {
+				callbackContext.success("ERROR");
+        	}
+        	           
             return true;
 
         } else {
