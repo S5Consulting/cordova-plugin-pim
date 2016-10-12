@@ -16,9 +16,9 @@ public class Pim extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
-    	throw new JSONException("This didn't work");
-    	//callbackContext.error("IT WORKED!");
-    	//return true;
+    	//throw new JSONException("This didn't work");
+    	callbackContext.error("ERROR!");
+    	return true;
 
 //        if (action.equals("open")) {
 //        	try {
