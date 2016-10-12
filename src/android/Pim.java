@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import no.point.paypoint.*;
 
-public class Pim extends CordovaPlugin implements PayPointListener {
+public class Pim extends CordovaPlugin {
 
 	PayPoint myPayPoint;
 
