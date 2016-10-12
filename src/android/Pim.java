@@ -22,13 +22,13 @@ public class Pim extends CordovaPlugin {
             	callbackContext.success("Called open without errors");
             	return true;
             } catch (IllegalAppVersionException e) {
-                callbackContext.error(e);
+                callbackContext.error(e.toString());
                 return false;
             } catch (ComAlreadyInitialisedException e) {
-            	callbackContext.error(e);
+            	callbackContext.error(e.toString());
             	return false;
             } catch (ComNotInitialisedException e) {
-                callbackContext.error(e);
+                callbackContext.error(e.toString());
                 return false;
             }	
     	}
