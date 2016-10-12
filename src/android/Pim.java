@@ -30,7 +30,11 @@ public class Pim extends CordovaPlugin {
             } catch (ComNotInitialisedException e) {
                 callbackContext.error(e.toString());
                 return false;
-            }	
+            } catch (IllegalIpAddressException e) {
+            	callbackContext.error(e.toString());
+                return false;
+            } 
+            return true;
     	}
     }
 }
