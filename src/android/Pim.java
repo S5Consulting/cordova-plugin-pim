@@ -1,4 +1,4 @@
-package com.s5.pim;
+package com.s5.plugins;
 
 import org.apache.cordova.*;
 import org.json.JSONObject;
