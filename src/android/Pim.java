@@ -23,16 +23,16 @@ public class Pim extends CordovaPlugin {
 				callbackContext.success("OK");
 				return true;
 			} catch (IllegalAppVersionException e) {
-				callbackContext.error("Error: " + e.printStackTrace());
+				callbackContext.error("Error IllegalAppVersionException");
 				return false;
 			} catch (ComAlreadyInitialisedException e) {
-				callbackContext.error("Error: " + e.printStackTrace());
+				callbackContext.error("Error ComAlreadyInitialisedException");
 				return false;
 			} catch (ComNotInitialisedException e) {
-				callbackContext.error("Error: " + e.printStackTrace());
+				callbackContext.error("Error ComNotInitialisedException");
 				return false;
 			} catch (IllegalIpAddressException e) {
-				callbackContext.error("Error: " + e.printStackTrace());
+				callbackContext.error("Error IllegalIpAddressException");
 				return false;
 			}
 		}
