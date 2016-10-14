@@ -19,37 +19,24 @@ public class Pim extends CordovaPlugin {
     	if (action.equals("open")) {
 			try {
 				int test = 0;
-				switch (test) {
-					case 1:
-						throw IllegalAppVersionException();
-					break;
-					case 2:
-						throw ComAlreadyInitialisedException();
-					break;
-					case 3:
-						throw ComNotInitialisedException();
-					break;
-					case 4:
-						throw IllegalIpAddressException();
-					break;
-				}
+
             	//myPayPoint.open("COM1", "v1.0.1");
             	callbackContext.success("Called open without errors");
             	return true;
-            } catch (IllegalAppVersionException e) {
-                callbackContext.error(e.toString());
-                return true;
-            } catch (ComAlreadyInitialisedException e) {
-            	callbackContext.error(e.toString());
-            	return true;
-            } catch (ComNotInitialisedException e) {
-                callbackContext.error(e.toString());
-                return true;
-            } catch (IllegalIpAddressException e) {
-            	callbackContext.error(e.toString());
-                return true;
+            } catch (Exception e) {
+
             }
     	}
     	return false;
     }
 }
+
+
+
+
+
+
+
+
+
+
