@@ -21,16 +21,16 @@ public class Pim extends CordovaPlugin {
 				int test = 0;
 				switch (test) {
 					case 1:
-						throw new IllegalAppVersionException();
+						throw IllegalAppVersionException();
 					break;
 					case 2:
-						throw new ComAlreadyInitialisedException();
+						throw ComAlreadyInitialisedException();
 					break;
 					case 3:
-						throw new ComNotInitialisedException();
+						throw ComNotInitialisedException();
 					break;
 					case 4:
-						throw new IllegalIpAddressException();
+						throw IllegalIpAddressException();
 					break;
 				}
             	//myPayPoint.open("COM1", "v1.0.1");
