@@ -17,16 +17,16 @@ public class Pim extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
     	if (action.equals("open")) {
-			try {
-				int test = 0;
 
-            	//myPayPoint.open("COM1", "v1.0.1");
-            	callbackContext.error("Called open without errors");
-            	return true;
-            } catch (Exception e) {
 
-            }
-    	}
+		try {
+			myPayPoint.open ("/DEV/BT_PAN", "v1.0.0");
+			callbackContext.error("OK");
+			return true;
+		} catch (IllegalAppVersionException | ComAlreadyInitialisedException | ComNotInitialisedException | IllegalIpAddressException e) {
+			callbackContext.error("Error: " + e.printStackTrace());
+			return false;
+		}
     	return false;
     }
 }
