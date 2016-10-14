@@ -21,7 +21,7 @@ public class Pim extends CordovaPlugin {
 				int test = 0;
 
             	//myPayPoint.open("COM1", "v1.0.1");
-            	callbackContext.success("Called open without errors");
+            	callbackContext.error("Called open without errors");
             	return true;
             } catch (Exception e) {
 
