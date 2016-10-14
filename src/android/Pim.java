@@ -42,7 +42,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
     }
 
     @Override
-	public void getPayPointEvent(PayPointEvent arg0) {
+	public void getPayPointEvent(PayPointEvent event) {
   		PayPointResultEvent result;
         PayPointStatusEvent status;
 
