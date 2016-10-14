@@ -64,10 +64,10 @@ public class Pim extends CordovaPlugin implements PayPointListener {
             	// Treat transaction result
                 result = (PayPointResultEvent)event;
                 // Check if result ok
-                if(result.getResult==PayPointResultEvent.RESULT_OK){
-                	if(result.getAccumulator==PayPointResultEvent.ACCU_APPROVED_ONLINE){
+                if(result.getResult()==PayPointResultEvent.RESULT_OK){
+                	if(result.getAccumulator()==PayPointResultEvent.ACCU_APPROVED_ONLINE){
                     	// Financial transaction approved online
-                    } else if(result.getAccumulator==PayPointResultEvent.ACCU_APPROVED_OFFLINE){
+                    } else if(result.getAccumulator()==PayPointResultEvent.ACCU_APPROVED_OFFLINE){
                     	// Financial transaction approved offline
                     } else {
                     	// Administrative transaction ok
