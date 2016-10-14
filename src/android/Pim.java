@@ -37,6 +37,10 @@ public class Pim extends CordovaPlugin implements PayPointListener {
 				callbackContext.error("Error IllegalIpAddressException");
 				return false;
 			}
+			catch (NoClassDefFoundError e) {
+				callbackContext.error("Error NoClassDefFoundError");
+				return false;
+			}
 		}
 		return false;
     }
