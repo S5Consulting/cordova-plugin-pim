@@ -25,6 +25,7 @@
 
     <source-file src="src/android/Pim.java" target-dir="src/com/s5/plugins/"/>
     <source-file src="src/android/libs/PayPoint.jar" target-dir="libs" />
+    <source-file src="src/android/libs/RXTXcomm.jar" target-dir="libs" />
   </platform>
 
 </plugin>
