@@ -21,7 +21,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
     	if (action.equals("open")) {
 
 			try {
-				myPayPoint.open("COM1", 0, "v1.0.0", PayPoint.PROTOCOL_ETHERNET);
+				myPayPoint.open("192.168.001.001", 0, "v1.0.0", PayPoint.PROTOCOL_ETHERNET);
 				callbackContext.success("OK");
 				return true;
 			} catch (IllegalAppVersionException e) {
