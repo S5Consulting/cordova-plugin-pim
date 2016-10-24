@@ -7,78 +7,106 @@ import org.json.JSONException;
 import no.point.paypoint.*;
 
 public class Pim extends CordovaPlugin implements PayPointListener {
-
-	PayPoint myPayPoint;
-	CallbackContext _callbackcontext;
-
-	public Pim() {
-		myPayPoint = new PayPoint();
-	}
+    private IPayPoint pim;
+    private AndroidLogger logger;
 
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
-    	_callbackcontext = callbackContext;
-    	if (action.equals("open")) {
+        if (action.equals("open")) {
 
-			try {
-				myPayPoint.open("192.168.001.001", 0, "v1.0.0", PayPoint.PROTOCOL_ETHERNET);
-				callbackContext.success("OK");
-				return true;
-			} catch (IllegalAppVersionException e) {
-				callbackContext.error("Error IllegalAppVersionException");
-				return false;
-			} catch (ComAlreadyInitialisedException e) {
-				callbackContext.error("Error ComAlreadyInitialisedException");
-				return false;
-			} catch (ComNotInitialisedException e) {
-				callbackContext.error("Error ComNotInitialisedException");
-				return false;
-			} catch (IllegalIpAddressException e) {
-				callbackContext.error("Error IllegalIpAddressException");
-				return false;
-			}
-			catch (NoClassDefFoundError e) {
-				callbackContext.error("Error NoClassDefFoundError");
-				return false;
-			}
-		}
-		return false;
+            try {
+                initPIM("192.168.044.231");
+                callbackContext.success("OK");
+                return true;
+            } catch (IllegalAppVersionException e) {
+                callbackContext.error("Error IllegalAppVersionException");
+                return false;
+            } catch (ComAlreadyInitialisedException e) {
+                callbackContext.error("Error ComAlreadyInitialisedException");
+                return false;
+            } catch (ComNotInitialisedException e) {
+                callbackContext.error("Error ComNotInitialisedException");
+                return false;
+            } catch (IllegalIpAddressException e) {
+                callbackContext.error("Error IllegalIpAddressException");
+                return false;
+            }
+            catch (NoClassDefFoundError e) {
+                callbackContext.error("Error NoClassDefFoundError");
+                return false;
+            }
+        } else if (action.equals("trans")) {
+            startTrans();
+        } 
+        return false;
+    }
+
+    private initPIM(String ipAddress) {
+        try {
+            if (pim != null && pim.isOpen()) {
+                pim.close();
+            }
+            if (logger == null) {
+                logger = new AndroidLogger();
+            }
+            logger.setLogLevel(Level.ALL);
+            logger.setDebugEnabled(true);
+
+            pim = PayPointFactory.createPayPoint(logger);
+            pim.open(ipAddress, "v1.0.0", PayPoint.PROTOCOL_ETHERNET);
+            pim.setEcrLanguage(PayPoint.LANG_ENG);
+            //pim.startTestCom();
+        }   
+        catch (Exception e) {
+            String errorMessage = getResources().getString(R.string.error_pim_init, e.getMessage());
+            // Send error message to app.
+            Log.e(getResources().getString(R.string.app_name), errorMessage, e);
+        }
+    }
+
+    public void startTrans() {
+
+        try {
+            float amountFloat = Float.parseFloat(100);
+            int amount = (int) (amountFloat * 100);
+            pim.startTransaction(PayPoint.TRANS_CARD_PURCHASE, amount, 0, PayPoint.MODE_NORMAL);
+        } catch (Exception e) {
+            String errorMessage = getResources().getString(R.string.error_pim_start_trans, e.getMessage());
+            // Send error message to app.
+            Log.e(getResources().getString(R.string.app_name), errorMessage, e);
+        }
     }
 
     @Override
-	public void getPayPointEvent(PayPointEvent event) {
-  		PayPointResultEvent result;
-        PayPointStatusEvent status;
-
-        _callbackcontext.success("Whooho!");
- 
+	public void getPayPointEvent(final PayPointEvent event) { 
+        
         switch(event.getEventType()){
         	case PayPointEvent.STATUS_EVENT:
-            		// Treat status event
-                status = (PayPointStatusEvent)event;
-                if(status.getStatusType()==PayPointStatusEvent.STATUS_DISPLAY){
-                	// Treat display
-                }else if(status.getStatusType()==PayPointStatusEvent.STATUS_CARD_INFO){
-                	// Treat card info
-                }else if(status.getStatusType()==PayPointStatusEvent.STATUS_READY_FOR_TRANS){
-                    // Terminal ready for transaction
-                }
+
+                PayPointStatusEvent statusEvent = (PayPointStatusEvent) event;
+                if (statusEvent.getStatusType() == PayPointStatusEvent.STATUS_DISPLAY) {
+
+                } else{
+
+                } 
             break;
             case PayPointEvent.RESULT_EVENT:
-            	// Treat transaction result
-                result = (PayPointResultEvent)event;
-                // Check if result ok
-                if(result.getResult()==PayPointResultEvent.RESULT_OK){
-                	if(result.getAccumulator()==PayPointResultEvent.ACCU_APPROVED_ONLINE){
-                    	// Financial transaction approved online
-                    } else if(result.getAccumulator()==PayPointResultEvent.ACCU_APPROVED_OFFLINE){
-                    	// Financial transaction approved offline
-                    } else {
-                    	// Administrative transaction ok
-                    }
-                } else {
-                    	// Declined/cancelled transaction
-                }
+
+                PayPointResultEvent resultEvent = (PayPointResultEvent) event;
+                String receipt = resultEvent.getNormalPrint();
+                if (resultEvent.getSignaturePrint() != null)
+                    receipt = receipt + System.getProperty("line.separator")
+                            + resultEvent.getSignaturePrint()
+                            + System.getProperty("line.separator");
+
+                String resultText = "Result:        " + resultEvent.getResult()
+                        + System.getProperty("line.separator") + "Accumulator:   "
+                        + resultEvent.getAccumulator()
+                        + System.getProperty("line.separator") + "LocalModeData: "
+                        + resultEvent.getLocalModeData()
+                        + System.getProperty("line.separator") + "Receipt:       "
+                        + System.getProperty("line.separator") + receipt
+                        + System.getProperty("line.separator");
             break;
 		}
 	}
