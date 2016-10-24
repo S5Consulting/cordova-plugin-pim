@@ -46,7 +46,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
         } else if (action.equals("event.callback")) {
             eventCallback = callbackContext;
             return true;
-        } else if (action.equals("print") {
+        } else if (action.equals("print")) {
 
             return true;
         });
