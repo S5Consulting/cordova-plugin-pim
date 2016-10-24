@@ -41,7 +41,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
         return false;
     }
 
-    private initPIM(String ipAddress) {
+    private void initPIM(String ipAddress) {
         try {
             if (pim != null && pim.isOpen()) {
                 pim.close();
