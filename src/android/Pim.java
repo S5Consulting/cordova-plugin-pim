@@ -39,7 +39,8 @@ public class Pim extends CordovaPlugin implements PayPointListener {
             } catch (Exception e) {
                 callbackContext.error("Error");
                 return false;
-            } 
+            }
+
         } else if (action.equals("trans")) {
             startTrans(args.getString(0));
             return true;
@@ -49,7 +50,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
         } else if (action.equals("print")) {
 
             return true;
-        });
+        }
         return false;
     }
 
