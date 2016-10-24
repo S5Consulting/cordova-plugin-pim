@@ -4,6 +4,24 @@ import org.apache.cordova.*;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import java.util.logging.Level;
+
 import no.point.paypoint.*;
 
 public class Pim extends CordovaPlugin implements PayPointListener {
