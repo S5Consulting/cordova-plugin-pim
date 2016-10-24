@@ -74,9 +74,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
             //pim.startTestCom();
         }   
         catch (Exception e) {
-            String errorMessage = getResources().getString(R.string.error_pim_init, e.getMessage());
-            // Send error message to app.
-            Log.e(getResources().getString(R.string.app_name), errorMessage, e);
+
         }
     }
 
@@ -87,9 +85,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
             int amount = (int) (amountFloat * 100);
             pim.startTransaction(PayPoint.TRANS_CARD_PURCHASE, amount, 0, PayPoint.MODE_NORMAL);
         } catch (Exception e) {
-            String errorMessage = getResources().getString(R.string.error_pim_start_trans, e.getMessage());
-            // Send error message to app.
-            Log.e(getResources().getString(R.string.app_name), errorMessage, e);
+
         }
     }
 
