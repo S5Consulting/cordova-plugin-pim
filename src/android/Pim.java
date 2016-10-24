@@ -34,23 +34,10 @@ public class Pim extends CordovaPlugin implements PayPointListener {
                 initPIM("192.168.044.231");
                 callbackContext.success("OK");
                 return true;
-            } catch (IllegalAppVersionException e) {
-                callbackContext.error("Error IllegalAppVersionException");
+            } catch (Exception e) {
+                callbackContext.error("Error");
                 return false;
-            } catch (ComAlreadyInitialisedException e) {
-                callbackContext.error("Error ComAlreadyInitialisedException");
-                return false;
-            } catch (ComNotInitialisedException e) {
-                callbackContext.error("Error ComNotInitialisedException");
-                return false;
-            } catch (IllegalIpAddressException e) {
-                callbackContext.error("Error IllegalIpAddressException");
-                return false;
-            }
-            catch (NoClassDefFoundError e) {
-                callbackContext.error("Error NoClassDefFoundError");
-                return false;
-            }
+            } 
         } else if (action.equals("trans")) {
             startTrans();
         } 
