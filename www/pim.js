@@ -6,7 +6,7 @@ module.exports = {
     },
     registerPayPointEventCallback: function(callback) {
         cordova.exec(callback, null, "Pim", "event.callback", []);
-    }
+    },
     startTrans: function (amount, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "Pim", "trans", [amount]);
     },
