@@ -74,7 +74,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
             //pim.startTestCom();
         }   
         catch (Exception e) {
-
+            throw e;
         }
     }
 
