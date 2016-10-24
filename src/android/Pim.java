@@ -26,6 +26,8 @@ public class Pim extends CordovaPlugin implements PayPointListener {
     private IPayPoint pim;
     private AndroidLogger logger;
 
+    private CallbackContext eventCallback;
+
     @Override
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
         if (action.equals("open")) {
@@ -40,7 +42,11 @@ public class Pim extends CordovaPlugin implements PayPointListener {
             } 
         } else if (action.equals("trans")) {
             startTrans();
-        } 
+            return true;
+        } else if (action.equals("event.callback")) {
+            eventCallback = callbackContext;
+            return true;
+        }
         return false;
     }
 
@@ -56,9 +62,10 @@ public class Pim extends CordovaPlugin implements PayPointListener {
             logger.setDebugEnabled(true);
 
             pim = PayPointFactory.createPayPoint(logger);
-            pim.open(ipAddress, 0, "v1.0.0", PayPoint.PROTOCOL_ETHERNET);
+            pim.open(ipAddress, 0, "pda001", PayPoint.PROTOCOL_ETHERNET);
+            pim.setPayPointListener(this);
             pim.setEcrLanguage(PayPoint.LANG_ENG);
-            //pim.startTestCom();
+            //startTrans();
         }   
         catch (Exception e) {
             
@@ -68,7 +75,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
     public void startTrans() {
 
         try {
-            float amountFloat = Float.parseFloat("100");
+            float amountFloat = Float.parseFloat("1");
             int amount = (int) (amountFloat * 100);
             pim.startTransaction(PayPoint.TRANS_CARD_PURCHASE, amount, 0, PayPoint.MODE_NORMAL);
         } catch (Exception e) {
@@ -77,19 +84,20 @@ public class Pim extends CordovaPlugin implements PayPointListener {
     }
 
     @Override
-	public void getPayPointEvent(final PayPointEvent event) { 
+    public void getPayPointEvent(PayPointEvent event) {
         
         switch(event.getEventType()){
-        	case PayPointEvent.STATUS_EVENT:
+            case PayPointEvent.STATUS_EVENT:
 
                 PayPointStatusEvent statusEvent = (PayPointStatusEvent) event;
                 if (statusEvent.getStatusType() == PayPointStatusEvent.STATUS_DISPLAY) {
-
+                    eventCallback.success("STATUS_EVENT");
                 } else{
-
+                    eventCallback.success("STATUS_EVENT");
                 } 
             break;
             case PayPointEvent.RESULT_EVENT:
+                eventCallback.success("RESULT_EVENT");
 
                 PayPointResultEvent resultEvent = (PayPointResultEvent) event;
                 String receipt = resultEvent.getNormalPrint();
@@ -107,16 +115,6 @@ public class Pim extends CordovaPlugin implements PayPointListener {
                         + System.getProperty("line.separator") + receipt
                         + System.getProperty("line.separator");
             break;
-		}
-	}
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
