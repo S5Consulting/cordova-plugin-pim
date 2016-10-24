@@ -69,7 +69,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
             logger.setDebugEnabled(true);
 
             pim = PayPointFactory.createPayPoint(logger);
-            pim.open(ipAddress, "v1.0.0", PayPoint.PROTOCOL_ETHERNET);
+            pim.open(ipAddress, 0, "v1.0.0", PayPoint.PROTOCOL_ETHERNET);
             pim.setEcrLanguage(PayPoint.LANG_ENG);
             //pim.startTestCom();
         }   
