@@ -87,7 +87,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
         }
     }
 
-    public void printRec(print) {
+    public void printRec(String print) {
         try {
             
         } catch (Exception e) {
