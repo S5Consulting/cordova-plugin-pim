@@ -81,7 +81,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
     public void startTrans() {
 
         try {
-            float amountFloat = Float.parseFloat(100);
+            float amountFloat = Float.parseFloat("100");
             int amount = (int) (amountFloat * 100);
             pim.startTransaction(PayPoint.TRANS_CARD_PURCHASE, amount, 0, PayPoint.MODE_NORMAL);
         } catch (Exception e) {
