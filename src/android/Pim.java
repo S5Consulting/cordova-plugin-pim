@@ -32,48 +32,51 @@ public class Pim extends CordovaPlugin implements PayPointListener {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         PluginResult pluginResult = null;
-        exception = null;
-        switch (action) {
-            case "open":
-                if (initPIM(args.getString(0))) {
-                    pluginResult = new PluginResult(PluginResult.Status.OK, "OPEN");
-                    callbackContext.sendPluginResult(pluginResult);
-                    return true;
-                } else {
-                    pluginResult = new PluginResult(PluginResult.Status.ERROR, _exception.getMessage());
-                    callbackContext.sendPluginResult(pluginResult);
-                    return false;
-                }                
-            break;
-            case "callback":
-                eventCallback = callbackContext;
+        _exception = null;
+        
+        if (action.equals("open")) {
+
+            if (initPIM(args.getString(0))) {
+                pluginResult = new PluginResult(PluginResult.Status.OK, "OPEN");
+                callbackContext.sendPluginResult(pluginResult);
                 return true;
-            break;
-            case "trans":
-                if (startTrans(arge.getString(0))) {
-                    pluginResult = new PluginResult(PluginResult.Status.OK, "TRANSACTION");
-                    callbackContext.sendPluginResult(pluginResult);
-                    return true;
-                } else {
-                    pluginResult = new PluginResult(PluginResult.Status.ERROR, _exception.getMessage());
-                    callbackContext.sendPluginResult(pluginResult);
-                    return false;
-                }
-            break;
-            case "print":
-                if (printRec(arge.getString(0))) {
-                    pluginResult = new PluginResult(PluginResult.Status.OK, "PRINT");
-                    callbackContext.sendPluginResult(pluginResult);
-                    return true;
-                } else {
-                    pluginResult = new PluginResult(PluginResult.Status.ERROR, _exception.getMessage());
-                    callbackContext.sendPluginResult(pluginResult);
-                    return false;
-                }
-            break;
-            default:
+            } else {
+                pluginResult = new PluginResult(PluginResult.Status.ERROR, _exception.getMessage());
+                callbackContext.sendPluginResult(pluginResult);
                 return false;
-            break;
+            } 
+
+        } else if (action.equals("callback")) {
+
+            _eventCallback = callbackContext;
+            return true;
+
+        } else if (action.equals("trans")) {
+
+            if (startTrans(args.getString(0))) {
+                pluginResult = new PluginResult(PluginResult.Status.OK, "TRANSACTION");
+                callbackContext.sendPluginResult(pluginResult);
+                return true;
+            } else {
+                pluginResult = new PluginResult(PluginResult.Status.ERROR, _exception.getMessage());
+                callbackContext.sendPluginResult(pluginResult);
+                return false;
+            }
+
+        } else if (action.equals("print") {
+
+            if (printRec(args.getString(0))) {
+                pluginResult = new PluginResult(PluginResult.Status.OK, "PRINT");
+                callbackContext.sendPluginResult(pluginResult);
+                return true;
+            } else {
+                pluginResult = new PluginResult(PluginResult.Status.ERROR, _exception.getMessage());
+                callbackContext.sendPluginResult(pluginResult);
+                return false;
+            }
+
+        } else {
+            return false;
         }
     }
 
@@ -135,11 +138,11 @@ public class Pim extends CordovaPlugin implements PayPointListener {
                 if (statusEvent.getStatusType() == PayPointStatusEvent.STATUS_DISPLAY) {                
                     pluginResult = new PluginResult(PluginResult.Status.OK, statusEvent.getStatusData());
                     pluginResult.setKeepCallback(true);
-                    eventCallback.sendPluginResult(pluginResult);
+                    _eventCallback.sendPluginResult(pluginResult);
                 } else{                    
                     pluginResult = new PluginResult(PluginResult.Status.OK, event.getEventType());
                     pluginResult.setKeepCallback(true);
-                    eventCallback.sendPluginResult(pluginResult);
+                    _eventCallback.sendPluginResult(pluginResult);
                 } 
             break;
             case PayPointEvent.RESULT_EVENT:
@@ -162,7 +165,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
 
                     pluginResult = new PluginResult(PluginResult.Status.OK, resultText);
                     pluginResult.setKeepCallback(true);
-                    eventCallback.sendPluginResult(pluginResult);
+                    _eventCallback.sendPluginResult(pluginResult);
             break;
         }
     }
