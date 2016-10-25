@@ -119,7 +119,7 @@ public class Pim extends CordovaPlugin implements PayPointListener {
     public boolean printRec(String print) {
 
         try {
-            pim.setAdminData("this is some text to print", PayPoint.ADM_DATA_PRINT);
+            pim.setAdminData(print, PayPoint.ADM_DATA_PRINT);
             pim.startAdmin(PayPoint.ADM_TERM_PRINT);
             return true;
         } catch (Exception e) {
