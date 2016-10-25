@@ -26,35 +26,58 @@ public class Pim extends CordovaPlugin implements PayPointListener {
     private IPayPoint pim;
     private AndroidLogger logger;
 
-    private CallbackContext eventCallback;
+    private CallbackContext _eventCallback;
+    private Exception _exception;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("open")) {
-
-            try {
-                initPIM(args.getString(0));
-                callbackContext.success("OK");
+        PluginResult pluginResult = null;
+        exception = null;
+        switch (action) {
+            case "open":
+                if (initPIM(args.getString(0))) {
+                    pluginResult = new PluginResult(PluginResult.Status.OK, "OPEN");
+                    callbackContext.sendPluginResult(pluginResult);
+                    return true;
+                } else {
+                    pluginResult = new PluginResult(PluginResult.Status.ERROR, _exception.getMessage());
+                    callbackContext.sendPluginResult(pluginResult);
+                    return false;
+                }                
+            break;
+            case "callback":
+                eventCallback = callbackContext;
                 return true;
-            } catch (Exception e) {
-                callbackContext.error("Error");
+            break;
+            case "trans":
+                if (startTrans(arge.getString(0))) {
+                    pluginResult = new PluginResult(PluginResult.Status.OK, "TRANSACTION");
+                    callbackContext.sendPluginResult(pluginResult);
+                    return true;
+                } else {
+                    pluginResult = new PluginResult(PluginResult.Status.ERROR, _exception.getMessage());
+                    callbackContext.sendPluginResult(pluginResult);
+                    return false;
+                }
+            break;
+            case "print":
+                if (printRec(arge.getString(0))) {
+                    pluginResult = new PluginResult(PluginResult.Status.OK, "PRINT");
+                    callbackContext.sendPluginResult(pluginResult);
+                    return true;
+                } else {
+                    pluginResult = new PluginResult(PluginResult.Status.ERROR, _exception.getMessage());
+                    callbackContext.sendPluginResult(pluginResult);
+                    return false;
+                }
+            break;
+            default:
                 return false;
-            }
-
-        } else if (action.equals("trans")) {
-            startTrans(args.getString(0));
-            return true;
-        } else if (action.equals("event.callback")) {
-            eventCallback = callbackContext;
-            return true;
-        } else if (action.equals("print")) {
-
-            return true;
+            break;
         }
-        return false;
     }
 
-    private void initPIM(String ipAddress) {
+    private boolean initPIM(String ipAddress) {
         try {
             if (pim != null && pim.isOpen()) {
                 pim.close();
@@ -66,33 +89,40 @@ public class Pim extends CordovaPlugin implements PayPointListener {
             logger.setDebugEnabled(true);
 
             pim = PayPointFactory.createPayPoint(logger);
-            pim.open(ipAddress, 0, "pda001", PayPoint.PROTOCOL_ETHERNET);
+            pim.open(ipAddress, 0, "v1.0.0", PayPoint.PROTOCOL_ETHERNET);
             pim.setPayPointListener(this);
             pim.setEcrLanguage(PayPoint.LANG_ENG);
-            //startTrans();
+            return true;
         }   
         catch (Exception e) {
-            
+            _exception = e;
+            return false;
         }
     }
 
-    public void startTrans(String price) {
+    public boolean startTrans(String value) {
 
         try {
-            float amountFloat = Float.parseFloat(price);
+            float amountFloat = Float.parseFloat(value);
             int amount = (int) (amountFloat * 100);
             pim.startTransaction(PayPoint.TRANS_CARD_PURCHASE, amount, 0, PayPoint.MODE_NORMAL);
+            return true;
         } catch (Exception e) {
-
+            _exception = e;
+            return false;
         }
     }
 
-    public void printRec(String print) {
-        try {
-            
-        } catch (Exception e) {
+    public boolean printRec(String print) {
 
-        }   
+        try {
+            pim.setAdminData(print, PayPoint.ADM_DATA_PRINT);
+            pim.startAdmin(PayPoint.ADM_TERM_PRINT);
+            return true;
+        } catch (Exception e) {
+            _exception = e;
+            return false;
+        }  
     }
 
     @Override
